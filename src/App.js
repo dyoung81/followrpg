@@ -9,6 +9,9 @@ function App() {
         <p>
           fOlLoW ApE
         </p>
+        <p>
+          by jibz and blmz
+        </p>
       </header>
     </div>
   );
