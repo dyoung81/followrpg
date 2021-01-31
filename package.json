@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "install-server" : "cd backend && npm install",
-    "heroku-postbuild": "npm run install-server && npm run build",
+    "heroku-postbuild": "npm install && npm run build && npm run install-server",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
