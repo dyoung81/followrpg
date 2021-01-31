@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production'){
 }
 
 mongoose
-	.connect(process.env.DB_CONNECT,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+	.connect(process.env.MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 	.then(() => {
         app.use(cors())
         app.use(express.json())

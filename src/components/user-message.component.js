@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import apiURL from '../apiURL'
 
 const Message = props => (
   <tr>
@@ -15,7 +16,7 @@ export default class MessageList extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/api/messages')
+    axios.get(apiURL + '/messages')
       .then(response => {
         this.setState({ messages: response.data })
       })
