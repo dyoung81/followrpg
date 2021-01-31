@@ -17,7 +17,6 @@ export default class MessageList extends Component {
   componentDidMount() {
     axios.get('http://localhost:5000/api/messages')
       .then(response => {
-        console.log("ress");
         this.setState({ messages: response.data })
       })
       .catch((error) => {
