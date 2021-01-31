@@ -7,6 +7,10 @@ const PORT = process.env.PORT || 5000;
 const mongoose = require("mongoose")
 const routes = require("./routes")
 
+if (process.env.NODE_ENV === 'production'){
+    app.use(express.static('../build'))
+}
+
 mongoose
 	.connect(process.env.DB_CONNECT,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 	.then(() => {
