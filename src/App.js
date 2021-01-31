@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import MessageList from "./components/user-message.component";
+
 
 function App() {
   return (
@@ -9,9 +11,8 @@ function App() {
         <p>
           fOlLoW ApE
         </p>
-        <p>
-          by jibz and blmz
-        </p>
+        <MessageList/>
+        
       </header>
     </div>
   );
