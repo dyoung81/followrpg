@@ -1,17 +1,15 @@
-import logo from './logo.svg';
+import React from 'react'
+import  Logo from './g1422.png';
 import './App.css';
-import MessageList from "./components/user-message.component";
-import Button from '@material-ui/core/Button'
+import SvgIcon from '@material-ui/core/SvgIcon'
 
+const MyLogo = () => <img src={Logo} alt="" />
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <header className="App-header">
-        <p>
-          fOlLoW ApE
-        </p>
-        
+         <MyLogo />       
       </header>
     </div>
   );
