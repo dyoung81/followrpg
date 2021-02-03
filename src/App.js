@@ -11,8 +11,6 @@ function App() {
         <p>
           fOlLoW ApE
         </p>
-        <Button variant="contained" color="primary">Click me</Button>
-        <MessageList/>
         
       </header>
     </div>
