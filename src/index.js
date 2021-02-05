@@ -3,17 +3,24 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
-import {orange , green} from '@material-ui/core/colors'
-import Button from '@material-ui/core/Button'
+
 
 
 const theme = createMuiTheme({
   palette:{
     primary: {
-      main: green[400],
+      main: '#243B53',
     },
     secondary: {
-      main: orange[400],
+      main: '#486581',
+    },
+    text: {
+      main: '#9FB3C8',
+    },
+  },
+  typography: {
+    primary: {
+      
     }
   }
 })
