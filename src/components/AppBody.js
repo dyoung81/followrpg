@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  text: {
-    color: theme.palette.text.main,
-  },
-}));
-
+import React from "react";
+import { useStyles } from "../CustomHooks";
+import Home from "../pages/Home";
+import Search from "../pages/Search";
+import GameDetails from "../pages/GameDetails";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 export default function AppBody(props) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-      <div> 
-          <h1 className={classes.text}>Body Boyyyyyyys</h1>
+  return (
+    <Router>
+      <div>
+        <Route path="/" exact component={Home} />
+        <Route path="/search" exact component={Search} />
+        <Route path="/gamedetails" exact component={GameDetails} />
       </div>
-    )
-  }
+    </Router>
+  );
+}
