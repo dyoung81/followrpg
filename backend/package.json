@@ -1,6 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "homepage": "www.arrange.gg",
   "description": "",
   "main": "server.js",
   "dependencies": {
