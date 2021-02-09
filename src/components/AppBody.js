@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Search from "../pages/Search";
 import GameDetails from "../pages/GameDetails";
 import { Route, Switch } from "react-router-dom";
+import AddGame from "../pages/AddGame";
 
 export default function AppBody(props) {
   const classes = useStyles();
@@ -13,6 +14,9 @@ export default function AppBody(props) {
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/addgame">
+          <AddGame />
         </Route>
         <Route path="/search">
           <Search />
