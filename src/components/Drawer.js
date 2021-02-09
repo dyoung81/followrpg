@@ -4,7 +4,7 @@ import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 import { useStyles } from "../CustomHooks";
 
 export default function TemporaryDrawer(props) {
@@ -34,36 +34,30 @@ export default function TemporaryDrawer(props) {
         onClose={closeDrawer}
         transitionDuration={100}
       >
-        <Link href="/" onClick={closeDrawer}>
-          <List component="nav">
-            <ListItem button>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-          </List>
-        </Link>
-        <Link href="/search" onClick={closeDrawer}>
-          <List component="nav">
-            <ListItem button>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Search" />
-            </ListItem>
-          </List>
-        </Link>
-        <Link href="/gamedetails" onClick={closeDrawer}>
-          <List component="nav">
-            <ListItem button>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Game Details" />
-            </ListItem>
-          </List>
-        </Link>
+        <List component="nav" component={Link} to="/">
+          <ListItem button onClick={closeDrawer}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+        </List>
+        <List component="nav" component={Link} to="/search">
+          <ListItem button onClick={closeDrawer}>
+            <ListItemIcon>
+              <DraftsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Search" />
+          </ListItem>
+        </List>
+        <List component="nav" component={Link} to="/gamedetails">
+          <ListItem button onClick={closeDrawer}>
+            <ListItemIcon>
+              <DraftsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Game Details" />
+          </ListItem>
+        </List>
       </Drawer>
     </div>
   );
