@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Drawer, IconButton } from "@material-ui/core";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { Link } from "react-router-dom";
+import InboxIcon from "@material-ui/icons/Inbox";
+import DraftsIcon from "@material-ui/icons/Drafts";
+import Link from "@material-ui/core/Link";
 import { useStyles } from "../CustomHooks";
 
 export default function TemporaryDrawer(props) {
@@ -29,28 +29,38 @@ export default function TemporaryDrawer(props) {
       </IconButton>
 
       <Drawer
-        classes={{ paper: classes.drawer }}
         variant="temporary"
         open={isDrawerOpened}
         onClose={closeDrawer}
+        transitionDuration={100}
       >
-        <Link to="/about">
-          <List>
-            <ListItem button key="About Us">
+        <Link href="/" onClick={closeDrawer}>
+          <List component="nav">
+            <ListItem button>
               <ListItemIcon>
-                <AccountCircleIcon />
+                <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="About Us" />
+              <ListItemText primary="Home" />
             </ListItem>
           </List>
         </Link>
-        <Link to="/contact">
-          <List>
-            <ListItem button key="Contact Us">
+        <Link href="/search" onClick={closeDrawer}>
+          <List component="nav">
+            <ListItem button>
               <ListItemIcon>
-                <PermContactCalendarIcon />
+                <DraftsIcon />
               </ListItemIcon>
-              <ListItemText primary="Contact Us" />
+              <ListItemText primary="Search" />
+            </ListItem>
+          </List>
+        </Link>
+        <Link href="/gamedetails" onClick={closeDrawer}>
+          <List component="nav">
+            <ListItem button>
+              <ListItemIcon>
+                <DraftsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Game Details" />
             </ListItem>
           </List>
         </Link>
