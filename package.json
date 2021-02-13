@@ -11,7 +11,7 @@
     "mongoose": "^5.11.14"
   },
   "scripts": {
-    "heroku-postbuild": "npm run install",
+    "heroku-postbuild": "npm install",
     "start": "node server.js"
   },
   "author": "",
