@@ -1,56 +1,23 @@
 {
-  "name": "follow",
-  "version": "0.1.0",
-  "private": true,
+  "name": "server",
+  "version": "1.0.0",
+  "homepage": "www.arrange.gg",
+  "description": "",
+  "main": "server.js",
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "axios": "^0.21.1",
-    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "npm": "^6.14.11",
-    "path": "^0.12.7",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
-    "web-vitals": "^0.2.4"
+    "express": "^4.17.1",
+    "mongoose": "^5.11.14"
   },
   "scripts": {
-    "start": "cd backend && node server.js",
-    "start-react": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "install-server": "cd backend && npm install",
-    "heroku-postbuild": "npm install && npm run build && npm run install-server",
-    "eject": "react-scripts eject"
+    "heroku-postbuild": "npm run install",
+    "start": "node server.js"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.6.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "nodemon": "^2.0.7"
-  },
+  "author": "",
+  "license": "ISC",
   "engines": {
     "node": "14.10.0"
   }
 }
+np
