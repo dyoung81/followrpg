@@ -7,10 +7,6 @@ const PORT = process.env.PORT || 5000;
 const mongoose = require("mongoose");
 const routes = require("./routes");
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("../build"));
-}
-
 mongoose
   .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
@@ -18,10 +14,12 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => {
-    app.use(cors());
-    app.use(express.json());
-    app.use("/", routes);
-    app.listen(PORT, () => {
-      console.log(`Server has started at ${PORT}!`);
-    });
+    console.log("Mongo loaded...");
   });
+
+app.use(cors());
+app.use(express.json());
+app.use("/", routes);
+app.listen(PORT, () => {
+  console.log(`Server has started at ${PORT}!`);
+});
