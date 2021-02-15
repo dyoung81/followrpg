@@ -31,11 +31,13 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000",
+    //failureRedirect: "http://localhost:3000",
+    failureRedirect: "https://www.arrange.gg",
     session: true,
   }),
   function (req, res) {
-    res.redirect("http://localhost:3000");
+    //res.redirect("http://localhost:3000");
+    res.redirect("https://www.arrange.gg");
   }
 );
 
