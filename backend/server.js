@@ -56,7 +56,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "https://www.api.arrange.gg/auth/google/callback",
     },
     function (_, __, profile, cb) {
       User.findOne({ googleId: profile.id }, async (err, doc) => {
