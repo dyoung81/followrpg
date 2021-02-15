@@ -29,7 +29,7 @@ app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(
   session({
     cookie: {
-      secure: CLIENT_URL === "https://www.arrange.gg",
+      //secure: CLIENT_URL === "https://www.arrange.gg",
       maxAge: 1000 * 60 * 60 * 1,
     },
     secret: process.env.SESSION_SECRET,
