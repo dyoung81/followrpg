@@ -12,7 +12,6 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CLIENT_URL = process.env.LOCAL_CLIENT_URL || "https://www.arrange.gg";
 
 mongoose
   .connect(process.env.MONGODB_URL, {
@@ -25,18 +24,22 @@ mongoose
   });
 
 app.use(express.json());
-app.use(cors({ origin: CLIENT_URL, credentials: true }));
-app.use(
-  session({
-    cookie: {
-      //secure: CLIENT_URL === "https://www.arrange.gg",
-      maxAge: 1000 * 60 * 60 * 1,
-    },
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+
+var sess = {
+  secret: "secretcode",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 5,
+  },
+};
+if (process.env.NODE_ENV == "production") {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
+
+app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -56,7 +59,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "https://www.api.arrange.gg/auth/google/callback",
+      callbackURL: "http://localhost:5000/auth/google/callback",
     },
     function (_, __, profile, cb) {
       User.findOne({ googleId: profile.id }, async (err, doc) => {
@@ -72,7 +75,9 @@ passport.use(
 
           await newUser.save();
           cb(null, newUser);
-        } else cb(null, doc);
+        } else {
+          cb(null, doc);
+        }
       });
     }
   )

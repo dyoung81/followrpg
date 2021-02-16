@@ -2,6 +2,9 @@ const express = require("express");
 const Message = require("./models/Message.js");
 const router = express.Router();
 const passport = require("passport");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 // Get all messages example
 router.get("/api/messages", async (req, res) => {
@@ -32,12 +35,12 @@ router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     //failureRedirect: "http://localhost:3000",
-    failureRedirect: "https://www.arrange.gg",
+    failureRedirect: process.env.CLIENT_URL,
     session: true,
   }),
   function (req, res) {
     //res.redirect("http://localhost:3000");
-    res.redirect("https://www.arrange.gg");
+    res.redirect(process.env.CLIENT_URL);
   }
 );
 
