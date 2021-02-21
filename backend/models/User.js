@@ -1,20 +1,30 @@
 const mongoose = require("mongoose");
 
 const user = new mongoose.Schema({
-  googleId: {
+  googleID: {
     required: false,
     type: String,
   },
-  twitterId: {
+  twitterID: {
     required: false,
     type: String,
   },
-  githubId: {
+  facebookID: {
     required: false,
     type: String,
   },
   username: {
     required: true,
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  displayName: {
     type: String,
   },
 });
