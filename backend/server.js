@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const passport = require("passport");

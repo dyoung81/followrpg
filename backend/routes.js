@@ -4,6 +4,9 @@ const passport = require("passport");
 const dotenv = require("dotenv");
 const { isAdministratorMiddleware } = require("./Middlewares");
 const User = require("./models/User");
+const GameTemplate = require("./models/GameTemplate");
+const GMStatBlock = require("./models/GMStatBlock");
+const bcrypt = require("bcrypt");
 
 dotenv.config();
 
@@ -18,6 +21,33 @@ router.get("/auth/logout", (req, res) => {
 });
 
 //Auth Routes
+router.post("/auth/register", async (req, res) => {
+  const { username, password } = req?.body;
+  if (
+    !username ||
+    !password ||
+    typeof username !== "string" ||
+    typeof password !== "string"
+  ) {
+    res.send("Improper Values");
+    return;
+  }
+  User.findOne({ username }, async (err, doc) => {
+    if (err) throw err;
+    if (doc) res.send("User Already Exists");
+    if (!doc) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({
+        username,
+        displayName: username,
+        password: hashedPassword,
+      });
+      await newUser.save();
+      res.send("success");
+    }
+  });
+});
+
 router.post("/auth/login", passport.authenticate("local"), (req, res) => {
   res.send("success");
 });
@@ -74,13 +104,6 @@ router.get("/getuser", (req, res) => {
   res.send(req.user);
 });
 
-router.get("/auth/logout", (req, res) => {
-  if (req.user) {
-    req.logout();
-    res.send("done");
-  }
-});
-
 // admin functions
 
 router.post(
@@ -114,5 +137,80 @@ router.get(
     });
   }
 );
+
+//game
+router.post("/game/createtemplate", async (req, res) => {
+  const {
+    title,
+    desc,
+    platform,
+    minPlayers,
+    maxPlayers,
+    gameSystem,
+  } = req?.body;
+  const { username, displayName } = req?.user;
+  if (
+    !title ||
+    !desc ||
+    typeof title !== "string" ||
+    typeof desc !== "string"
+  ) {
+    res.send("Improper Values");
+    return;
+  }
+  const newGameTemplate = new GameTemplate({
+    title,
+    desc,
+    platforms: platform,
+    players: {
+      min: minPlayers,
+      max: maxPlayers,
+    },
+    gameSystem,
+  });
+  await newGameTemplate.save(function (err, savedTemplate) {
+    GMStatBlock.findOne({ username }, async (err, doc) => {
+      if (err) throw err;
+      if (!doc) {
+        const newGM = new GMStatBlock({
+          username: username,
+          displayName: displayName,
+          gameTemplates: [savedTemplate.id],
+        });
+        await newGM.save();
+      }
+      doc.gameTemplates.push(savedTemplate.id);
+      await doc.save();
+    });
+  });
+  res.send("success");
+});
+
+router.post("/auth/register", async (req, res) => {
+  const { username, password } = req?.body;
+  if (
+    !username ||
+    !password ||
+    typeof username !== "string" ||
+    typeof password !== "string"
+  ) {
+    res.send("Improper Values");
+    return;
+  }
+  User.findOne({ username }, async (err, doc) => {
+    if (err) throw err;
+    if (doc) res.send("User Already Exists");
+    if (!doc) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({
+        username,
+        displayName: username,
+        password: hashedPassword,
+      });
+      await newUser.save();
+      res.send("success");
+    }
+  });
+});
 
 module.exports = router;
