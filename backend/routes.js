@@ -186,6 +186,30 @@ router.post("/game/createtemplate", async (req, res) => {
   res.send("success");
 });
 
+router.get("/game/gametemplates", async (req, res) => {
+  const { username } = req?.user;
+  await GMStatBlock.findOne({ username }, (err, doc) => {
+    if (err) throw err;
+    if (!doc) {
+      res.send("No GM Profile");
+    } else {
+      GameTemplate.find(
+        { _id: { $in: doc.gameTemplates } },
+        (errr, templates) => {
+          if (errr) throw errr;
+          if (!templates) {
+            res.send("No templates");
+          } else {
+            res.send(templates);
+          }
+        }
+      );
+    }
+  });
+});
+
+//auth
+
 router.post("/auth/register", async (req, res) => {
   const { username, password } = req?.body;
   if (
