@@ -1,32 +1,37 @@
 const mongoose = require("mongoose");
 
-const GameTemplate = new mongoose.Schema({
-  title: {
-    required: true,
-    type: String,
-  },
-  desc: {
-    required: true,
-    type: String,
-  },
-  platforms: {
-    type: [String],
-  },
-  players: {
-    min: {
-      type: Number,
-      min: 0,
-      max: 999,
+const GameTemplate = new mongoose.Schema(
+  {
+    title: {
+      required: true,
+      type: String,
     },
-    max: {
-      type: Number,
-      min: 0,
-      max: 999,
+    desc: {
+      required: true,
+      type: String,
+    },
+    platforms: {
+      type: [String],
+    },
+    players: {
+      min: {
+        type: Number,
+        min: 0,
+        max: 999,
+      },
+      max: {
+        type: Number,
+        min: 0,
+        max: 999,
+      },
+    },
+    gameSystem: {
+      type: String,
     },
   },
-  gameSystem: {
-    type: String,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model("GameTemplate", GameTemplate);
