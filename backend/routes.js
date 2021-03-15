@@ -6,6 +6,7 @@ const { isAdministratorMiddleware } = require("./Middlewares");
 const User = require("./models/User");
 const GameTemplate = require("./models/GameTemplate");
 const GMStatBlock = require("./models/GMStatBlock");
+const ScheduledGame = require("./models/ScheduledGame");
 const bcrypt = require("bcrypt");
 
 dotenv.config();
@@ -186,6 +187,70 @@ router.post("/game/createtemplate", async (req, res) => {
   res.send("success");
 });
 
+router.post("/game/creategame", async (req, res) => {
+  const {
+    title,
+    desc,
+    platform,
+    minPlayers,
+    maxPlayers,
+    gameSystem,
+    duration,
+    recurring,
+    date,
+    days,
+  } = req?.body;
+  const { username, displayName } = req?.user;
+  if (
+    !title ||
+    !desc ||
+    typeof title !== "string" ||
+    typeof desc !== "string"
+  ) {
+    res.send("Improper Values");
+    return;
+  }
+  const newScheduledGame = new ScheduledGame({
+    gameDetails: {
+      title: title,
+      desc: desc,
+      platforms: platform,
+      players: {
+        min: minPlayers,
+        max: maxPlayers,
+      },
+      gameSystem: gameSystem,
+    },
+    scheduling: {
+      duration: duration,
+      recurring: recurring,
+      date: date,
+      days: days,
+    },
+    gm: {
+      username: username,
+      displayName: displayName,
+    },
+    players: [],
+  });
+  await newScheduledGame.save(function (err, savedGame) {
+    GMStatBlock.findOne({ username }, async (err, doc) => {
+      if (err) throw err;
+      if (!doc) {
+        const newGM = new GMStatBlock({
+          username: username,
+          displayName: displayName,
+          scheduledGames: [savedGame.id],
+        });
+        await newGM.save();
+      }
+      doc.scheduledGames.push(savedGame.id);
+      await doc.save();
+    });
+  });
+  res.send("success");
+});
+
 router.get("/game/gametemplates", async (req, res) => {
   const { username } = req?.user;
   await GMStatBlock.findOne({ username }, (err, doc) => {
@@ -205,6 +270,26 @@ router.get("/game/gametemplates", async (req, res) => {
         }
       );
     }
+  });
+});
+
+router.get("/search/allgames", async (req, res) => {
+  await ScheduledGame.find(
+    {},
+    { "gm.displayName": 1, "gameDetails.title": 1 },
+    (err, doc) => {
+      if (err) throw err;
+      res.send(doc);
+    }
+  );
+});
+
+router.get("/game/gamedetails", async (req, res) => {
+  const { gameid } = req?.query;
+  await ScheduledGame.findOne({ _id: gameid }, (err, doc) => {
+    if (err) throw err;
+    if (doc) res.send(doc);
+    else res.send("No such game");
   });
 });
 
