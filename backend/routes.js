@@ -4,8 +4,13 @@ const { isAdministratorMiddleware } = require("./Middlewares");
 const auth = require("./controllers/auth");
 const admin = require("./controllers/admin");
 const game = require("./controllers/game");
+const search = require("./controllers/search");
 
 dotenv.config();
+
+const fail = {
+  failureRedirect: "/login",
+};
 
 module.exports = function (app, passport) {
   //User functions
@@ -69,6 +74,40 @@ module.exports = function (app, passport) {
   app.post("/game/createtemplate", game.createTemplate);
   app.post("/game/creategame", game.createGame);
   app.get("/game/gametemplates", game.gameTemplates);
-  app.get("/search/allgames", game.allGames);
   app.get("/game/gamedetails", game.gameDetails);
+
+  //search
+  app.get("/search/allgames", search.allGames);
+
+  //error handling
+  app.use(function (err, req, res, next) {
+    // treat as 404
+    if (
+      err.message &&
+      (~err.message.indexOf("not found") ||
+        ~err.message.indexOf("Cast to ObjectId failed"))
+    ) {
+      return next();
+    }
+
+    console.error(err.stack);
+
+    if (err.stack.includes("ValidationError")) {
+      res.status(422).render("422", { error: err.stack });
+      return;
+    }
+
+    // error page
+    res.status(500).render("500", { error: err.stack });
+  });
+
+  // assume 404 since no middleware responded
+  app.use(function (req, res) {
+    const payload = {
+      url: req.originalUrl,
+      error: "Not found",
+    };
+    if (req.accepts("json")) return res.status(404).json(payload);
+    res.status(404).render("404", payload);
+  });
 };

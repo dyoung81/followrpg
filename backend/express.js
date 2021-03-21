@@ -1,11 +1,17 @@
 const express = require("express");
 const helmet = require("helmet");
+const compression = require("compression");
 const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
 module.exports = function (app, passport, mongoose) {
   app.use(helmet());
+  app.use(
+    compression({
+      threshold: 512,
+    })
+  );
   app.use(express.json());
   app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
   var sess = {

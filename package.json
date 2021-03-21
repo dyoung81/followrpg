@@ -6,7 +6,7 @@
   "main": "server.js",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "co": "^4.6.0",
+    "compression": "^1.7.4",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -27,7 +27,7 @@
   "scripts": {
     "heroku-postbuild": "npm install",
     "start": "cd backend && node server.js",
-    "start-dev": "cd backend && nodemon server.js"
+    "start-dev": "cd backend && nodemon --trace-sync-io server.js"
   },
   "author": "",
   "license": "ISC",

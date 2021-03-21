@@ -1,16 +1,16 @@
-const User = require("../models/User");
-const { wrap: async } = require("co");
+const mongoose = require("mongoose");
+const User = mongoose.model("User");
 
-exports.deleteuser = async(function* (req, res) {
+exports.deleteuser = async function (req, res) {
   const { id } = req?.body;
-  User.findByIdAndDelete(id, (err) => {
+  await User.findByIdAndDelete(id, (err) => {
     if (err) throw err;
   });
   res.send("success");
-});
+};
 
-exports.getallusers = async(function* (req, res) {
-  User.find({}, (err, data) => {
+exports.getallusers = async function (req, res) {
+  await User.find({}, (err, data) => {
     if (err) throw err;
     const filteredUsers = [];
     data.forEach((item) => {
@@ -23,4 +23,4 @@ exports.getallusers = async(function* (req, res) {
     });
     res.send(filteredUsers);
   });
-});
+};

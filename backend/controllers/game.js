@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const { wrap: async } = require("co");
 const GameTemplate = mongoose.model("GameTemplate");
 const GMStatBlock = mongoose.model("GMStatBlock");
 const ScheduledGame = mongoose.model("ScheduledGame");
 
-exports.createTemplate = async(function* (req, res) {
+exports.createTemplate = async function (req, res) {
   const {
     title,
     desc,
@@ -33,7 +32,7 @@ exports.createTemplate = async(function* (req, res) {
     },
     gameSystem,
   });
-  newGameTemplate.save(function (err, savedTemplate) {
+  await newGameTemplate.save(function (err, savedTemplate) {
     GMStatBlock.findOne({ username }, async (err, doc) => {
       if (err) throw err;
       if (!doc) {
@@ -49,9 +48,9 @@ exports.createTemplate = async(function* (req, res) {
     });
   });
   res.send("success");
-});
+};
 
-exports.createGame = async(function* (req, res) {
+exports.createGame = async function (req, res) {
   const {
     title,
     desc,
@@ -97,7 +96,7 @@ exports.createGame = async(function* (req, res) {
     },
     players: [],
   });
-  newScheduledGame.save(function (err, savedGame) {
+  await newScheduledGame.save(function (err, savedGame) {
     GMStatBlock.findOne({ username }, async (err, doc) => {
       if (err) throw err;
       if (!doc) {
@@ -113,11 +112,11 @@ exports.createGame = async(function* (req, res) {
     });
   });
   res.send("success");
-});
+};
 
-exports.gameTemplates = async(function* (req, res) {
+exports.gameTemplates = async function (req, res) {
   const { username } = req?.user;
-  GMStatBlock.findOne({ username }, async (err, doc) => {
+  await GMStatBlock.findOne({ username }, async (err, doc) => {
     if (err) throw err;
     if (!doc) {
       res.send("No GM Profile");
@@ -135,24 +134,13 @@ exports.gameTemplates = async(function* (req, res) {
       );
     }
   });
-});
+};
 
-exports.allGames = async(function* (req, res) {
-  ScheduledGame.find(
-    {},
-    { "gm.displayName": 1, "gameDetails.title": 1 },
-    (err, doc) => {
-      if (err) throw err;
-      res.send(doc);
-    }
-  );
-});
-
-exports.gameDetails = async(function* (req, res) {
+exports.gameDetails = async function (req, res) {
   const { gameid } = req?.query;
-  ScheduledGame.findOne({ _id: gameid }, (err, doc) => {
+  await ScheduledGame.findOne({ _id: gameid }, (err, doc) => {
     if (err) throw err;
     if (doc) res.send(doc);
     else res.send("No such game");
   });
-});
+};
