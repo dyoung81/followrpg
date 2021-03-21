@@ -1,6 +1,7 @@
 const User = require("./models/User");
+const { wrap: async } = require("co");
 
-const isAdministratorMiddleware = (req, res, next) => {
+exports.isAdministratorMiddleware = async(function* (req, res, next) {
   const { user } = req;
   if (user) {
     User.findOne({ username: user.username }, (err, doc) => {
@@ -14,6 +15,4 @@ const isAdministratorMiddleware = (req, res, next) => {
   } else {
     res.send("Sorry, you arent logged in.");
   }
-};
-
-module.exports = { isAdministratorMiddleware };
+});
