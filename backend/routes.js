@@ -1,6 +1,5 @@
 const dotenv = require("dotenv");
-const { isAdministratorMiddleware } = require("./Middlewares");
-
+const { isAdministratorMiddleware } = require("./middleware/Middlewares");
 const auth = require("./controllers/auth");
 const admin = require("./controllers/admin");
 const game = require("./controllers/game");
@@ -77,32 +76,10 @@ module.exports = function (app, passport) {
   app.get("/game/gamedetails", game.gameDetails);
 
   //search
-  app.get("/search/allgames", search.allGames);
-
-  //error handling
-  app.use(function (err, req, res, next) {
-    // treat as 404
-    if (
-      err.message &&
-      (~err.message.indexOf("not found") ||
-        ~err.message.indexOf("Cast to ObjectId failed"))
-    ) {
-      return next();
-    }
-
-    console.error(err.stack);
-
-    if (err.stack.includes("ValidationError")) {
-      res.status(422).render("422", { error: err.stack });
-      return;
-    }
-
-    // error page
-    res.status(500).render("500", { error: err.stack });
-  });
+  app.get("/search/allgames", isAdministratorMiddleware, search.allGames);
 
   // assume 404 since no middleware responded
-  app.use(function (req, res) {
+  app.use(function (req, res, next) {
     const payload = {
       url: req.originalUrl,
       error: "Not found",

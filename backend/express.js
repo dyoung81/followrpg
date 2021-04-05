@@ -1,4 +1,6 @@
 const express = require("express");
+const morgan = require("morgan");
+const errorHandler = require("./middleware/errorHandler");
 const helmet = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
@@ -13,7 +15,9 @@ module.exports = function (app, passport, mongoose) {
     })
   );
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+  app.use(morgan("tiny"));
   var sess = {
     secret: process.env.SESS_SECRET,
     resave: false,

@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const passport = require("passport");
 const fs = require("fs");
 const join = require("path").join;
+const errorHandler = require("./middleware/errorHandler");
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    useCreateIndex: true,
   })
   .then(() => {
     console.log("Mongo loaded...");
@@ -30,6 +32,7 @@ mongoose
 require("./authentication/passport")(passport);
 require("./express")(app, passport, mongoose);
 require("./routes")(app, passport);
+app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server has started at ${PORT}!`);
 });

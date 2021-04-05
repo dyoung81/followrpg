@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const user = new mongoose.Schema(
   {
@@ -15,8 +16,13 @@ const user = new mongoose.Schema(
       type: String,
     },
     username: {
-      required: true,
       type: String,
+      required: [true, "Enter a username."],
+      unique: [true, "That username is taken"],
+      validate: [
+        validator.isAlphanumeric,
+        "Usernames may only have letters and numbers",
+      ],
     },
     password: {
       type: String,
